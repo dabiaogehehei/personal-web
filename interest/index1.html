@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interest</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        ul{
+            list-style: none;
+        }
+        .bigBox{
+            width: 1000px;
+            height: 475px;
+            margin:0 auto;
+            margin-top: 80px;
+            overflow: hidden;
+        }
+        .tabs{
+            border:1px solid #ddd;
+            border-bottom:0;
+            height: 36px;
+            width: 320px;
+            /*box-sizing: border-box;*/
+        }
+        .tabs li{
+            position: relative;
+            float: left;
+            width: 79px;
+            height: 34px;
+            line-height:34px;
+            text-align: center;
+            cursor: pointer;
+            border-top:4px solid #fff;
+            border-right:1px solid #ddd;
+        }
+        .tabs li:nth-child(4){
+            border-right:none;
+            width: 80px;
+        }
+        .pics{
+            width: 1000px;
+            border:1px solid #ddd;
+            height: 475px;
+            /*margin-top: -1px;*/
+            overflow: hidden;
+        }
+        .pics .main{
+            float: left;
+            display: none;
+        }
+        .pics .selected{
+            display: block;
+        }
+        .tabs li.active{
+            border-top:4px solid red;
+            border-bottom: 0;
+            /*border-right:trans;*/
+        }
+    </style>
+    <script src="./jquery-1.11.1.min.js"></script>
+    <script>
+        $(function(){
+            $(".tabs li").mouseenter(function () {
+                var $this = $(this);
+                index = $this.index();
+                $this.addClass("active").siblings("li").removeClass("active");
+                $(".pics>div").eq(index).addClass("selected").siblings("div").removeClass("selected");
+            })
+        });
+    </script>
+</head>
+<body>
+    <div class='bigBox' id="bigBox">
+        <!--tab栏-->
+        <ul class="tabs" id="tabs">
+            <li class="tab-item active">五子棋</li>
+            <li class="tab-item ">象棋</li>
+            <li class="tab-item ">乒乓球</li>
+            <li class="tab-item ">英雄联盟</li>
+        </ul>
+       <!-- 图片盒子-->
+        <div class="pics" id="pics">
+           <!-- 第一张图-->
+            <div class="main selected" >
+                <a href="javascript:;" alt="象棋">
+                    <img src=imgs/01.jpg alt="象棋">
+                </a>
+            </div>
+            <!-- 第二张图-->
+            <div class="main" >
+                <a href="javascript:;" alt="象棋">
+                    <img src=imgs/02.jpg alt="象棋">
+                </a>
+            </div>
+            <!-- 第三张图-->
+            <div class="main " >
+                <a href="javascript:;" alt="象棋">
+                    <img src=imgs/03.jpg alt="象棋">
+                </a>
+            </div>
+            <!-- 第四张图-->
+            <div class="main" >
+                <a href="javascript:;" alt="象棋">
+                    <img src=imgs/04.jpg alt="象棋">
+                </a>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

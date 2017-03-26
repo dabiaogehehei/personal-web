@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>魅族手机手风琴</title>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+ul{
+    list-style: none;
+}
+a,img{
+    border:0;
+}
+.fold_warp{
+    width: 1200px;
+    height: 480px;
+    margin: 40px auto;
+    overflow: hidden;
+    position: relative;
+    background-color: cyan;
+}
+.fold_warp li{
+    float: left;
+    width: 200px;
+    height: 480px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+
+.pic_auto{
+    width: 100%;
+    height: 100%;
+}
+.pic_auto1{
+    background: url("./images/01.jpg" ) no-repeat center 0;
+}
+.pic_auto2{
+    background: url("./images/02.jpg" ) no-repeat center 0;
+}
+.pic_auto3{
+    background: url("./images/03.jpg" ) no-repeat center 0;
+}
+.pic_auto4{
+    background: url("./images/04.jpg" ) no-repeat center 0;
+}
+.pic_auto5{
+    background: url("./images/05.jpg" ) no-repeat center 0;
+}
+
+    
+</style>
+</head>
+<body>
+<ul class="fold_warp" id="sm">
+   <!-- 第一张图片-->
+    <li>
+        <a href="javascript:;">
+            <div class="pic_auto pic_auto1"></div>
+        </a>
+    </li>
+    <!-- 第二张图片-->
+    <li>
+        <a href="javascript:;">
+            <div class="pic_auto pic_auto2"></div>
+        </a>
+    </li>
+    <!-- 第三张图片-->
+    <li>
+        <a href="javascript:;">
+            <div class="pic_auto pic_auto3"></div>
+        </a>
+    </li>
+    <!-- 第四张图片-->
+    <li>
+        <a href="javascript:;">
+            <div class="pic_auto pic_auto4"></div>
+        </a>
+    </li>
+    <!-- 第五张图片-->
+    <li>
+        <a href="javascript:;">
+            <div class="pic_auto pic_auto5"></div>
+        </a>
+    </li>
+</ul>
+<script src="./js/jquery-1.10.2.js"></script>
+<script>
+    (function(){
+
+        var slideMenu=function(){
+            var sp,st,t,m,sa,l,w,gw,ot;
+            return{
+                destruct:function(){
+                    if(m){
+                        clearInterval(m.htimer);
+                        clearInterval(m.timer);
+                    }
+                },
+//                sm为ul的id值
+//                sw为被hover的图片变化后的宽度
+//                mt为动画执行一个周期的时间
+//                sp步伐的数量,值越大,整个变化执行越慢
+//                sl为页面刚加载是默认显示那张图片的全图
+                build:function(sm,sw,mt,s,sl,h){
+                    sp=s;
+                    st=sw;
+                    t=mt;
+                    m=document.getElementById(sm);
+                    sa=m.getElementsByTagName('li');
+                    l=sa.length;
+                    w=m.offsetWidth;
+                    gw=w/l;
+                    ot=Math.floor((w-st)/(l-1));
+                    var i=0;
+                    for(i;i<l;i++){
+                        s=sa[i];
+                        s.style.width=gw+'px';
+                        this.timer(s)
+                    }
+                    if(sl!=null){
+                        m.timer=setInterval(function(){
+                            slideMenu.slide(sa[sl-1])
+                        },t)}
+                },
+                timer:function(s){
+                    s.onmouseover=function(){
+                        clearInterval(m.htimer);
+                        clearInterval(m.timer);
+                        m.timer = setInterval(function(){
+                            slideMenu.slide(s)
+                        },t);
+                        //console.log($(this).find('.mask_b').html());
+                        $(this).find('.mask_b').hide();
+                        //console.log($(this).find('.mask_b').attr("style"));
+                    }
+                    s.onmouseout=function(){
+                        clearInterval(m.timer);
+                        clearInterval(m.htimer);
+                        m.htimer=setInterval(function(){
+                            slideMenu.slide(s,true)
+                        },t);
+                        //console.log($(this).find('.mask_b').html());
+                        $(this).find('.mask_b').show();
+                        //console.log($(this).find('.mask_b').attr("style"));
+                    }
+                },
+                slide:function(s,c){
+                    var cw=parseInt(s.style.width);
+                    if((cw<st && !c) || (cw>gw && c)){
+                        var owt=0; var i=0;
+                        for(i;i<l;i++){
+                            if(sa[i]!=s){
+                                var o,ow; var oi=0; o=sa[i]; ow=parseInt(o.style.width);
+                                if(ow<gw && c){
+                                    oi=Math.floor((gw-ow)/sp);
+                                    oi=(oi>0)?oi:1;
+                                    o.style.width=(ow+oi)+'px';
+                                    //console.log(o);
+                                    //console.log(o.style.width);
+                                }else if(ow>ot && !c){
+                                    oi=Math.floor((ow-ot)/sp);
+                                    oi=(oi>0)?oi:1;
+                                    o.style.width=(ow-oi)+'px';
+                                    //console.log(o);
+                                    //console.log(o.style.width);
+                                }
+                                if(c){
+                                    owt=owt+(ow+oi)
+                                }else{
+                                    owt=owt+(ow-oi)
+                                }
+                            }
+                        }
+                        s.style.width=(w-owt)+'px';
+                    }else{
+                        if(m.htimer)
+                            clearInterval(m.htimer)
+                        if(m.timer)
+                            clearInterval(m.timer);
+                    }
+                }
+            };
+        }();
+        slideMenu.build('sm',1000,10,10,1);
+    })();
+</script>
+</body>
+</html>
